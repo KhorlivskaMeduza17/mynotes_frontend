@@ -1,18 +1,38 @@
-import { section } from 'framer-motion/client'
-import { Button, Input, Textarea } from "@chakra-ui/react";
-import './App.css'
+import CreateNoteForm from './components/CreateNoteForm';
+import Note from './components/Note';
+import { Card, CardBody, CardFooter, CardHeader, Divider, Heading, Select, Text, Input } from '@chakra-ui/react';
+import Filters from './components/Filters';
+import { useEffect } from 'react';
+import { fetchNotes } from './services/notes';
 
 function App() {
+useEffect(() => {
+  const fetchData = async () => {
+    let notes = await fetchNotes();
+
+    console.log(notes);
+  }
+
+  fetchData();
+}, [])
+
   return (
-    <section>
-      <div>
-        <form>
-          <h3>Створення нотатки</h3>
-          <Input placeholder="Назва"/>
-          <Textarea placeholder="Опис"/>
-          <Button>Створити</Button>
-        </form>
+    <section className='p-8 flex flex-row justify-start items-start gap-12'>
+      <div className='flex flex-col w-1/3 gap-10'>
+        <CreateNoteForm/>
+        <Filters/>
       </div>
+        <ul className='flex flex-col gap-5 w-1/2'>
+          <li>
+            <Note />
+          </li>
+          <li>
+            <Note />
+          </li>
+          <li>
+            <Note />
+          </li>
+      </ul>
     </section>
   )
 }
