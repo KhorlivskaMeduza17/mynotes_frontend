@@ -4,13 +4,18 @@ import { Card, CardBody, CardFooter, CardHeader, Divider, Heading, Select, Text,
 import Filters from './components/Filters';
 import { useEffect } from 'react';
 import { fetchNotes } from './services/notes';
+import React, { useState } from 'react';
+
 
 function App() {
-useEffect(() => {
-  const fetchData = async () => {
-    let notes = await fetchNotes();
+  const [notes, setNotes] = useState([]);
 
-    console.log(notes);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      let notes = await fetchNotes();
+
+      setNotes(notes);
   }
 
   fetchData();
@@ -22,16 +27,17 @@ useEffect(() => {
         <CreateNoteForm/>
         <Filters/>
       </div>
-        <ul className='flex flex-col gap-5 w-1/2'>
-          <li>
-            <Note />
+
+      <ul className='flex flex-col gap-5 w-1/2'>
+        {notes.map((n) => (
+          <li key={n.id}>
+          <Note 
+            title={n.title} 
+            description={n.description} 
+            createdAt={n.createdAt}
+          />
           </li>
-          <li>
-            <Note />
-          </li>
-          <li>
-            <Note />
-          </li>
+        ))}
       </ul>
     </section>
   )
